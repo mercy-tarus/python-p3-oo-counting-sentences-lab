@@ -1,27 +1,34 @@
-#!/usr/bin/env python3
+import re
 
-import io
-import sys
+class MyString():
 
-class MyString:
-  def __init__(self, value=''):
-        if not isinstance(value, str):
-            raise TypeError("The value must be a string.\n")
-        self.value = value
-
-  def is_sentence(self):
-        return self.value.endswith('.')
-
-  def is_question(self):
-        return self.value.endswith('?')
-
-  def is_exclamation(self):
-        return self.value.endswith('!')
-
-  def count_sentences(self):
+    def __init__(self, value = ''):
+        self._value = value
         
-        temp_value = self.value.replace('.', '|').replace('?', '|').replace('!', '|')
-        
-        sentences = [sentence for sentence in temp_value.split('|') if sentence.strip()]
-        return len(sentences)
-  pass
+    def get_value(self):
+        return self._value
+
+    def set_value(self, value):
+        if (type(value) == str):
+            print(f"Setting value to {value}")
+            self._value = value
+        else:
+            print("The value must be a string.")
+
+    value = property(get_value, set_value)
+
+    def is_sentence(self):
+        return self._value.endswith(".")
+
+    def is_question(self):
+        return self._value.endswith("?")
+
+    def is_exclamation(self):
+        return self._value.endswith("!")
+
+    def count_sentences(self):
+        if self.value == '':
+            return 0
+            
+        return len(re.split(r'[!\?\.](?= )', self.value))
+
